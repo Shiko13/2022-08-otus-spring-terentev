@@ -24,17 +24,19 @@ public class QuestionDaoImpl implements QuestionDao {
     }
 
     @Override
-    public List<Question> getAllQuestions() {
+    public List<Question> getAllQuestions(String language) {
         List<Question> questions = new ArrayList<>();
         try (InputStream is = new ClassPathResource(path).getInputStream();
              BufferedReader br = new BufferedReader(new InputStreamReader(is));
              CSVReader csvReader = new CSVReader(br)) {
             String[] lines;
             while ((lines = csvReader.readNext()) != null) {
-                Question question = new Question();
-                question.setText(lines[0]);
-                question.setAnswer(lines[1]);
-                questions.add(question);
+                if (lines[0].equals(language)) {
+                    Question question = new Question();
+                    question.setText(lines[1]);
+                    question.setAnswer(lines[2]);
+                    questions.add(question);
+                }
             }
         } catch (IOException | CsvValidationException | ArrayIndexOutOfBoundsException e) {
             throw new CsvRuntimeException("Problem with reading csv", e);

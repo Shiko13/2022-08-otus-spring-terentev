@@ -5,5 +5,5 @@ import ru.otus.spring.entity.Question;
 import java.util.List;
 
 public interface QuestionDao {
-    List<Question> getAllQuestions();
+    List<Question> getAllQuestions(String language);
 }
