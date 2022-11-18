@@ -1,0 +1,13 @@
+spring:
+  banner:
+    image:
+      location: banner.txt
+  messages:
+    basename: "i18n/appmessages"
+    encoding: UTF-8
+
+application:
+  locale: en
+
+data:
+  path: "quiz.csv"
