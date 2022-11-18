@@ -1,19 +1,23 @@
 package ru.otus.spring.dao;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.otus.spring.entity.Question;
-
+import ru.otus.spring.service.impl.QuestionServiceImpl;
 import java.util.List;
-
+import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest
 class QuestionDaoImplTests {
 
-    @Test
-    void shouldHaveCorrectFindAllMethodInEnglish() {
-        QuestionDaoImpl questionDao = new QuestionDaoImpl("quiz.csv");
-        List<Question> questionsAndAnswers = questionDao.getAllQuestions("en");
+    @Autowired
+    private QuestionServiceImpl questionService;
 
+    @Test
+    void shouldHaveCorrectFindAllMethodInRussian() {
+        List<Question> questionsAndAnswers = questionService.getAllQuestions(new Locale("en"));
         List<String> questions = List.of("What is the capital of Britain?",
                 "What is the capital of Germany?",
                 "What is the capital of Nepal?",
@@ -34,9 +38,8 @@ class QuestionDaoImplTests {
     }
 
     @Test
-    void shouldHaveCorrectFindAllMethodInRussian() {
-        QuestionDaoImpl questionDao = new QuestionDaoImpl("quiz.csv");
-        List<Question> questionsAndAnswers = questionDao.getAllQuestions("ru");
+    void shouldHaveCorrectFindAllMethodInEnglish() {
+        List<Question> questionsAndAnswers = questionService.getAllQuestions(new Locale("ru"));
 
         List<String> questions = List.of("Столица Великобритании?",
                 "Столица Германии?",
