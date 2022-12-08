@@ -3,6 +3,7 @@ package ru.otus.spring.dao;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
@@ -54,6 +55,9 @@ public class BookDaoJpaTest {
     @Autowired
     private BookDaoJpa bookDao;
 
+    @Autowired
+    private TestEntityManager tem;
+
     @Test
     void shouldReturnExpectedBookCount() {
         long actualBookCount = bookDao.count();
@@ -62,9 +66,7 @@ public class BookDaoJpaTest {
 
     @Test
     void shouldInsertBook() {
-        long expectedId = 4L;
-        Book expectedBook = Book.builder()
-                .id(expectedId)
+        Book expectedBook = tem.persistAndFlush(Book.builder()
                 .title("The Lord of the Rings")
                 .publicationYear(1954)
                 .author(Author.builder()
@@ -77,18 +79,20 @@ public class BookDaoJpaTest {
                         .id(EXISTING_BOOK_GENRE_ID_3)
                         .name(EXISTING_GENRE_NAME_3)
                         .build())
-                .build();
-        Comment comment = Comment.builder()
-                .id(4L)
+                .build());
+
+        Comment comment = tem.persistAndFlush(Comment.builder()
                 .text("It will be great movie!")
                 .book(expectedBook)
-                .build();
+                .build());
 
         expectedBook.setComments(new ArrayList<>());
         expectedBook.getComments().add(comment);
         bookDao.insert(expectedBook);
-        Book actualBook = bookDao.getById(expectedId);
-        assertThat(actualBook).usingRecursiveComparison().isEqualTo(expectedBook);
+
+        Book actualBook = tem.find(Book.class, expectedBook.getId());
+
+        assertThat(actualBook).isEqualTo(expectedBook);
     }
 
     @Test
@@ -107,15 +111,19 @@ public class BookDaoJpaTest {
                         .name(EXISTING_GENRE_NAME_3)
                         .build())
                 .build();
+
         Comment comment = Comment.builder()
                 .id(EXISTING_COMMENT_ID_1)
                 .text(EXISTING_COMMENT_TEXT_ID_1)
                 .book(expectedBook)
                 .build();
+
         expectedBook.setComments(new ArrayList<>());
         expectedBook.getComments().add(comment);
-        Book actualBook = bookDao.getById(expectedBook.getId());
-        assertThat(actualBook).usingRecursiveComparison().isEqualTo(expectedBook);
+
+        Book actualBook = tem.find(Book.class, expectedBook.getId());
+
+        assertThat(actualBook).isEqualTo(expectedBook);
     }
 
     @Test
@@ -143,13 +151,16 @@ public class BookDaoJpaTest {
                         .name(EXISTING_GENRE_NAME_3)
                         .build())
                 .build();
+
         Comment comment1 = Comment.builder()
                 .id(EXISTING_COMMENT_ID_1)
                 .text(EXISTING_COMMENT_TEXT_ID_1)
                 .book(book1)
                 .build();
+
         book1.setComments(new ArrayList<>());
         book1.getComments().add(comment1);
+
         Book book2 = Book.builder()
                 .id(EXISTING_BOOK_ID_2)
                 .title(EXISTING_BOOK_TITLE_2)
@@ -164,13 +175,16 @@ public class BookDaoJpaTest {
                         .name(EXISTING_GENRE_NAME_2)
                         .build())
                 .build();
+
         Comment comment2 = Comment.builder()
                 .id(EXISTING_COMMENT_ID_2)
                 .text(EXISTING_COMMENT_TEXT_ID_2)
                 .book(book2)
                 .build();
+
         book1.setComments(new ArrayList<>());
         book1.getComments().add(comment2);
+
         Book book3 = Book.builder()
                 .id(EXISTING_BOOK_ID_3)
                 .title(EXISTING_BOOK_TITLE_3)
@@ -185,15 +199,18 @@ public class BookDaoJpaTest {
                         .name(EXISTING_GENRE_NAME_1)
                         .build())
                 .build();
+
         Comment comment3 = Comment.builder()
                 .id(EXISTING_COMMENT_ID_3)
                 .text(EXISTING_COMMENT_TEXT_ID_3)
                 .book(book3)
                 .build();
+
         book1.setComments(new ArrayList<>());
         book1.getComments().add(comment3);
 
         List<Book> actualBookList = bookDao.getAll();
+
         assertThat(actualBookList)
                 .containsExactlyInAnyOrder(book1, book2, book3);
     }

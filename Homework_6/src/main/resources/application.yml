@@ -4,6 +4,11 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password: password
+  shell:
+    interactive:
+      enabled: false
+  main:
+    allow-circular-references: true
 
   sql:
     init:
@@ -21,3 +26,4 @@ spring:
     generate-ddl: false
     hibernate:
       ddl-auto: none
+    show-sql: true

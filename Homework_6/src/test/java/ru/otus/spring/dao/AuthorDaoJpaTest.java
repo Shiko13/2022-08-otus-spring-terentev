@@ -3,6 +3,7 @@ package ru.otus.spring.dao;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.spring.domain.Author;
 
@@ -29,6 +30,9 @@ public class AuthorDaoJpaTest {
     @Autowired
     private AuthorDaoJpa authorDao;
 
+    @Autowired
+    private TestEntityManager tem;
+
     @Test
     void shouldReturnExpectedAuthorCount() {
         long actualAuthorCount = authorDao.count();
@@ -37,14 +41,13 @@ public class AuthorDaoJpaTest {
 
     @Test
     void shouldInsertAuthor() {
-        long expectedId = 4L;
-        Author expectedAuthor = Author.builder()
-                .id(expectedId)
-                .name("Jules")
-                .surname("Cortazar")
-                .build();
-        authorDao.insert(expectedAuthor);
-        Author actualAuthor = authorDao.getById(expectedId);
+        Author expectedAuthor = tem.persistAndFlush(
+                Author.builder()
+                        .name("Jules")
+                        .surname("Cortazar")
+                        .build());
+        Author actualAuthor = tem.find(Author.class, expectedAuthor.getId());
+
         assertThat(actualAuthor).usingRecursiveComparison().isEqualTo(expectedAuthor);
     }
 
@@ -55,7 +58,8 @@ public class AuthorDaoJpaTest {
                 .name(EXISTING_AUTHOR_NAME_1)
                 .surname(EXISTING_AUTHOR_SURNAME_1)
                 .build();
-        Author actualAuthor = authorDao.getById(expectedAuthor.getId());
+        Author actualAuthor = tem.find(Author.class, expectedAuthor.getId());
+
         assertThat(actualAuthor).usingRecursiveComparison().isEqualTo(expectedAuthor);
     }
 
@@ -86,6 +90,7 @@ public class AuthorDaoJpaTest {
                 .surname(EXISTING_AUTHOR_SURNAME_3)
                 .build();
         List<Author> actualAuthorList = authorDao.getAll();
+
         assertThat(actualAuthorList)
                 .containsExactlyInAnyOrder(author1, author2, author3);
     }

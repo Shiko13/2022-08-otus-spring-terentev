@@ -22,3 +22,5 @@ insert into COMMENTS (text, book_id)
 VALUES ('Is it book about music?', 2);
 insert into COMMENTS (text, book_id)
 VALUES ('Sancho Panza is my crush ^_^', 3);
+insert into COMMENTS (text, book_id)
+VALUES ('Is it a book about big number?', 1);

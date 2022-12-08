@@ -29,12 +29,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> getAll() {
-        return commentDao.getAll();
+    public void deleteById(long id) {
+        commentDao.deleteById(id);
     }
 
     @Override
-    public void deleteById(long id) {
-        commentDao.deleteById(id);
+    public List<Comment> getByBookId(long bookId) {
+        return commentDao.getByBookId(bookId);
     }
 }

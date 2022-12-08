@@ -9,6 +9,6 @@ public interface CommentService {
     long count();
     long insert(Comment comment);
     Comment getById(long id);
-    List<Comment> getAll();
     void deleteById(long id);
+    List<Comment> getByBookId(long bookId);
 }

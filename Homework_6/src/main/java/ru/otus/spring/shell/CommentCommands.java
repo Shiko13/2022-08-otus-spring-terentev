@@ -8,7 +8,6 @@ import ru.otus.spring.dao.CommentDao;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Comment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @ShellComponent
@@ -42,20 +41,16 @@ public class CommentCommands {
     }
 
     @Transactional
-    @ShellMethod(value = "Get all comments", key = {"comment_get_all", "c_get_all", "c_ga"})
-    public List<String> getAllComments() {
-        List<Comment> comments = commentDao.getAll();
-        List<String> commentsToString = new ArrayList<>();
-        for (Comment comment : comments) {
-            commentsToString.add(comment.toString());
-        }
-        return commentsToString;
-    }
-
-    @Transactional
     @ShellMethod(value = "Delete comment by id", key = {"comment_delete_by_id", "c_delete_by_id", "c_dbi"})
     public String deleteCommentById(long id) {
         commentDao.deleteById(id);
         return String.format("Comment with id = %s deleted", id);
+    }
+
+    @Transactional
+    @ShellMethod(value = "Get comment by id of book", key = {"comment_get_by_book_id", "c_get_by_book_id", "c_gbbi"})
+    public String getByBookId(long bookId) {
+        List<Comment> comments = commentDao.getByBookId(bookId);
+        return comments.toString();
     }
 }

@@ -1,6 +1,7 @@
 package ru.otus.spring.domain;
 
 import lombok.*;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -21,14 +22,9 @@ public class Comment {
     @Column(name = "text")
     private String text;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book;
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, text);
-    }
 
     @Override
     public String toString() {
@@ -44,6 +40,11 @@ public class Comment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
-        return id == comment.id && Objects.equals(text, comment.text);
+        return id == comment.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

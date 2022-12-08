@@ -2,6 +2,7 @@ package ru.otus.spring.dao;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Comment;
 
 import javax.persistence.EntityManager;
@@ -35,16 +36,19 @@ public class CommentDaoJpa implements CommentDao {
     }
 
     @Override
-    public List<Comment> getAll() {
-        TypedQuery<Comment> query = em.createQuery("select c from Comment c", Comment.class);
-        return query.getResultList();
-    }
-
-    @Override
     public void deleteById(long id) {
         Comment comment = em.find(Comment.class, id);
         if (comment != null) {
             em.remove(comment);
         }
+    }
+
+    @Override
+    public List<Comment> getByBookId(long bookId) {
+        Book book = em.find(Book.class, bookId);
+        if (book == null) {
+            return List.of();
+        }
+        return book.getComments();
     }
 }
