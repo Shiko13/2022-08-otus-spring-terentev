@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CommentDao {
     long count();
-    long insert(Comment comment);
+    void insert(Comment comment);
     Comment getById(long id);
     void deleteById(long id);
     List<Comment> getByBookId(long bookId);
