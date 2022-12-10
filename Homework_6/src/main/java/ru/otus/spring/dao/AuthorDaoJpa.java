@@ -23,8 +23,13 @@ public class AuthorDaoJpa implements AuthorDao {
     }
 
     @Override
-    public void insert(Author author) {
-        em.persist(author);
+    public Author insert(Author author) {
+        if (author.getId() == 0) {
+            em.persist(author);
+            return author;
+        } else {
+            return em.merge(author);
+        }
     }
 
     @Override

@@ -22,8 +22,13 @@ public class CommentDaoJpa implements CommentDao {
     }
 
     @Override
-    public void insert(Comment comment) {
-        em.persist(comment);
+    public Comment insert(Comment comment) {
+        if (comment.getId() == 0) {
+            em.persist(comment);
+            return comment;
+        } else {
+            return em.merge(comment);
+        }
     }
 
     @Override

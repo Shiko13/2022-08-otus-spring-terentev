@@ -22,9 +22,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     @Override
-    public long insert(Comment comment) {
-        commentDao.insert(comment);
-        return comment.getId();
+    public Comment insert(Comment comment) {
+        return commentDao.insert(comment);
     }
 
     @Transactional

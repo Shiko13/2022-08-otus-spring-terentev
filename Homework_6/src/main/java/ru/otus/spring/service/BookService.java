@@ -7,7 +7,7 @@ import java.util.List;
 public interface BookService {
 
     long count();
-    long insert(Book book);
+    Book insert(Book book);
     Book getById(long id);
     List<Book> getAll();
     void deleteById(long id);

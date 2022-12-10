@@ -22,9 +22,8 @@ public class GenreServiceImpl implements GenreService {
 
     @Transactional
     @Override
-    public long insert(Genre genre) {
-        genreDao.insert(genre);
-        return genre.getId();
+    public Genre insert(Genre genre) {
+        return genreDao.insert(genre);
     }
 
     @Transactional

@@ -21,8 +21,13 @@ public class BookDaoJpa implements BookDao {
     }
 
     @Override
-    public void insert(Book book) {
-        em.persist(book);
+    public Book insert(Book book) {
+        if (book.getId() == 0) {
+            em.persist(book);
+            return book;
+        } else {
+            return em.merge(book);
+        }
     }
 
     @Override

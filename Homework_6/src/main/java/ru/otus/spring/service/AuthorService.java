@@ -7,7 +7,7 @@ import java.util.List;
 public interface AuthorService {
 
     long count();
-    long insert(Author author);
+    Author insert(Author author);
     Author getById(long id);
     List<Author> getAll();
     void deleteById(long id);

@@ -22,9 +22,8 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional
     @Override
-    public long insert(Author author) {
-        authorDao.insert(author);
-        return author.getId();
+    public Author insert(Author author) {
+        return authorDao.insert(author);
     }
 
     @Transactional

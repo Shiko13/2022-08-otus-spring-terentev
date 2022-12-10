@@ -22,9 +22,8 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public long insert(Book book) {
-        bookDao.insert(book);
-        return book.getId();
+    public Book insert(Book book) {
+        return bookDao.insert(book);
     }
 
     @Transactional
