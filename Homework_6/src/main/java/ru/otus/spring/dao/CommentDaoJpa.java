@@ -1,6 +1,7 @@
 package ru.otus.spring.dao;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Comment;
@@ -50,6 +51,7 @@ public class CommentDaoJpa implements CommentDao {
         if (book == null) {
             return List.of();
         }
+        Hibernate.initialize(book.getComments());
         return book.getComments();
     }
 }

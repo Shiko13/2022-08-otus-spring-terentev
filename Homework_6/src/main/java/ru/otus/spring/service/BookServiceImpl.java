@@ -7,6 +7,7 @@ import ru.otus.spring.dao.BookDao;
 import ru.otus.spring.domain.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,13 +27,13 @@ public class BookServiceImpl implements BookService {
         return bookDao.insert(book);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
-    public Book getById(long id) {
+    public Optional<Book> getById(long id) {
         return bookDao.getById(id);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<Book> getAll() {
         return bookDao.getAll();

@@ -4,9 +4,6 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password: password
-  shell:
-    interactive:
-      enabled: false
   main:
     allow-circular-references: true
 

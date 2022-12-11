@@ -10,6 +10,7 @@ import ru.otus.spring.service.BookService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @ShellComponent
 @RequiredArgsConstructor
@@ -37,7 +38,7 @@ public class BookCommands {
 
     @ShellMethod(value = "Get book by id", key = {"book_get_by_id", "b_get_by_id", "b_gbi"})
     public String getBookById(long id) {
-        Book book = bookService.getById(id);
+        Optional<Book> book = bookService.getById(id);
         return book.toString();
     }
 

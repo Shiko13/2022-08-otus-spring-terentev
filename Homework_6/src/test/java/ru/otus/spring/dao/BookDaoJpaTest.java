@@ -12,6 +12,7 @@ import ru.otus.spring.domain.Genre;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -132,7 +133,7 @@ public class BookDaoJpaTest {
                 .doesNotThrowAnyException();
 
         bookDao.deleteById(EXISTING_BOOK_ID_1);
-        assertThat(bookDao.getById(EXISTING_BOOK_ID_1)).isEqualTo(null);
+        assertThat(bookDao.getById(EXISTING_BOOK_ID_1)).isEqualTo(Optional.empty());
     }
 
     @Test

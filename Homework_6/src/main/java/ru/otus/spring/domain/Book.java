@@ -16,6 +16,11 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedEntityGraph(name = "book-entity-graph", attributeNodes = {
+        @NamedAttributeNode("author"),
+        @NamedAttributeNode("genre"),
+        @NamedAttributeNode("comments")})
+
 public class Book {
 
     @Id
@@ -38,8 +43,8 @@ public class Book {
     private Genre genre;
 
     @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
     @Override

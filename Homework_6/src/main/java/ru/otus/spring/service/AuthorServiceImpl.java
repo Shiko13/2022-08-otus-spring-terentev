@@ -26,13 +26,13 @@ public class AuthorServiceImpl implements AuthorService {
         return authorDao.insert(author);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Author getById(long id) {
         return authorDao.getById(id);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<Author> getAll() {
         return authorDao.getAll();

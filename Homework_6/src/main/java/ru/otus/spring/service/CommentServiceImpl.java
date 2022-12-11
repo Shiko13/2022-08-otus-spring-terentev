@@ -2,6 +2,7 @@ package ru.otus.spring.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.dao.CommentDao;
 import ru.otus.spring.domain.Comment;
@@ -26,7 +27,7 @@ public class CommentServiceImpl implements CommentService {
         return commentDao.insert(comment);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Comment getById(long id) {
         return commentDao.getById(id);
@@ -38,7 +39,7 @@ public class CommentServiceImpl implements CommentService {
         commentDao.deleteById(id);
     }
 
-    @Transactional
+    @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
     @Override
     public List<Comment> getByBookId(long bookId) {
         return commentDao.getByBookId(bookId);

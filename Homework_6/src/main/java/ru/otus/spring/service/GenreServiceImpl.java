@@ -26,13 +26,13 @@ public class GenreServiceImpl implements GenreService {
         return genreDao.insert(genre);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Genre getById(long id) {
         return genreDao.getById(id);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<Genre> getAll() {
         return genreDao.getAll();
