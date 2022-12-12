@@ -16,11 +16,6 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedEntityGraph(name = "book-entity-graph", attributeNodes = {
-        @NamedAttributeNode("author"),
-        @NamedAttributeNode("genre"),
-        @NamedAttributeNode("comments")})
-
 public class Book {
 
     @Id

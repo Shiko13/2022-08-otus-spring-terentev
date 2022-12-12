@@ -6,7 +6,6 @@ import ru.otus.spring.domain.Book;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,15 +33,14 @@ public class BookDaoJpa implements BookDao {
 
     @Override
     public Optional<Book> getById(long id) {
-        Book book = em.find(
-                Book.class,
-                id,
-                Collections.singletonMap(
-                        "javax.persistence.fetchgraph",
-                        em.getEntityGraph("book-entity-graph")
-                )
-        );
-        return Optional.ofNullable(book);
+        TypedQuery<Book> query = em.createQuery("select b " +
+                        "from Book b " +
+                        "join fetch b.author " +
+                        "join fetch b.genre " +
+                        "where b.id = :id",
+                Book.class);
+        query.setParameter("id", id);
+        return Optional.ofNullable(query.getSingleResult());
     }
 
     @Override

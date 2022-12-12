@@ -5,6 +5,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Comment;
+import ru.otus.spring.dto.CommentDto;
 import ru.otus.spring.service.CommentService;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public class CommentCommands {
 
     @ShellMethod(value = "Get comment by id of book", key = {"comment_get_by_book_id", "c_get_by_book_id", "c_gbbi"})
     public String getByBookId(long bookId) {
-        List<Comment> comments = commentService.getByBookId(bookId);
+        List<CommentDto> comments = commentService.getByBookId(bookId);
         return comments.toString();
     }
 }
