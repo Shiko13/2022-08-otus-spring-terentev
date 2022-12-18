@@ -6,6 +6,7 @@ import org.springframework.shell.standard.ShellMethod;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
+import ru.otus.spring.dto.BookDto;
 import ru.otus.spring.service.AuthorService;
 import ru.otus.spring.service.BookService;
 import ru.otus.spring.service.GenreService;
@@ -60,5 +61,11 @@ public class BookCommands {
     public String deleteBookById(String id) {
         bookService.deleteById(id);
         return String.format("Book with id = %s deleted", id);
+    }
+
+    @ShellMethod(value = "Get book by id of author", key = {"book_get_by_author_id", "b_get_by_author_id", "b_gbai"})
+    public String getByAuthorId(String authorId) {
+        List<BookDto> books = bookService.getByAuthorId(authorId);
+        return books.toString();
     }
 }

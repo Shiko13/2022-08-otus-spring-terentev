@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CommentRepositoryTest {
 
     @Autowired
-    CommentRepository commentRepository;
+    private CommentRepository commentRepository;
 
     @Autowired
     private MongoTemplate mongoTemplate;
