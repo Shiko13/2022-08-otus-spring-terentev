@@ -3,6 +3,7 @@ package ru.otus.spring.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.spring.repository.BookRepository;
 import ru.otus.spring.repository.GenreRepository;
 import ru.otus.spring.domain.Genre;
 
@@ -13,6 +14,7 @@ import java.util.List;
 public class GenreServiceImpl implements GenreService {
 
     private final GenreRepository genreRepository;
+    private final BookRepository bookRepository;
 
     @Transactional
     @Override
@@ -41,6 +43,7 @@ public class GenreServiceImpl implements GenreService {
     @Transactional
     @Override
     public void deleteById(String id) {
+        bookRepository.deleteByGenre_Id(id);
         genreRepository.deleteById(id);
     }
 }

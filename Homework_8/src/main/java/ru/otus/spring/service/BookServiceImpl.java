@@ -7,6 +7,7 @@ import ru.otus.spring.domain.Book;
 import ru.otus.spring.dto.BookDto;
 import ru.otus.spring.dto.converter.DtoConverter;
 import ru.otus.spring.repository.BookRepository;
+import ru.otus.spring.repository.CommentRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
-    private final CommentService commentService;
+    private final CommentRepository commentRepository;
     private final DtoConverter<Book, BookDto> bookConverter;
 
     @Transactional
@@ -47,7 +48,7 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public void deleteById(String id) {
-        commentService.getByBookId(id).forEach(c -> commentService.deleteById(c.getId()));
+        commentRepository.deleteByBook_Id(id);
         bookRepository.deleteById(id);
     }
 

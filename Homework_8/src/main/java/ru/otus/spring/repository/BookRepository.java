@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface BookRepository extends MongoRepository<Book, String> {
     List<Book> findByAuthor_Id(String authorId);
+    void deleteByAuthor_Id(String authorId);
+    void deleteByGenre_Id(String genreId);
 }
