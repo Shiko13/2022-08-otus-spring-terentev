@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>E-library</title>
+    <link th:href="@{/styles/css/main.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="page">
+    <header class="header">
+        <h1 class="header__title">E-library</h1>
+    </header>
+    <section class="sidebar">
+        <p><a class="button" href="/templates/index.html" th:href="@{/}">Home page</a></p>
+    </section>
+    <section class="content">
+        <form class="save-form" action="/book/add" method="post">
+            <table class="table__add">
+                <tr>
+                    <td><label>Title</label></td>
+                    <td><label>
+                        <input type="text" name="title">
+                    </label></td>
+                </tr>
+                <tr>
+                    <td><label>Publication year</label></td>
+                    <td><label>
+                        <input type="text" name="publicationYear"/>
+                    </label></td>
+                </tr>
+                <tr>
+                    <td><label>Author</label></td>
+                    <td>
+                        <label>
+                            <select name="authorId">
+                                <option th:each="author : ${authors}" th:value="${author.id}"
+                                        th:text="${author.name} + ' ' + ${author.surname}">
+                            </select>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Genre</label></td>
+                    <td>
+                        <label>
+                            <select name="genreId">
+                                <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}">
+                            </select>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="submit">Save</button>
+                        <a href="" th:href="@{/}">
+                            <button type="button">Cancel</button>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </section>
+</div>
+</body>
+</html>
