@@ -21,7 +21,7 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id")
-    private long id;
+    private Long id;
 
     @Column(name = "title")
     private String title;
@@ -39,7 +39,7 @@ public class Book {
 
     @Fetch(FetchMode.SUBSELECT)
     @ToString.Exclude
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     @Override

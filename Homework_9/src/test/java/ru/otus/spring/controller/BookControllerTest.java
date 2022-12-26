@@ -7,18 +7,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.otus.spring.domain.Author;
-import ru.otus.spring.domain.Book;
-import ru.otus.spring.domain.Genre;
-import ru.otus.spring.repository.AuthorRepository;
-import ru.otus.spring.repository.BookRepository;
-import ru.otus.spring.repository.GenreRepository;
+import ru.otus.spring.dto.AuthorDto;
+import ru.otus.spring.dto.BookDto;
+import ru.otus.spring.dto.GenreDto;
+import ru.otus.spring.service.AuthorService;
+import ru.otus.spring.service.BookService;
+import ru.otus.spring.service.GenreService;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -28,88 +31,74 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(BookController.class)
 public class BookControllerTest {
 
-    private static final Author EXPECTED_AUTHOR_1 = Author.builder()
+    private static final AuthorDto EXPECTED_AUTHOR_1 = AuthorDto.builder()
             .id(1L)
             .name("John")
             .surname("Tolkien")
             .build();
 
-    private static final Author EXPECTED_AUTHOR_2 = Author.builder()
+    private static final AuthorDto EXPECTED_AUTHOR_2 = AuthorDto.builder()
             .id(2L)
             .name("Lev")
             .surname("Tolstoy")
             .build();
 
-    private static final Author EXPECTED_AUTHOR_3 = Author.builder()
+    private static final AuthorDto EXPECTED_AUTHOR_3 = AuthorDto.builder()
             .id(3L)
             .name("Miguel")
             .surname("Cervantes")
             .build();
 
-    private static final Genre EXPECTED_GENRE_1 = Genre.builder()
+    private static final GenreDto EXPECTED_GENRE_1 = GenreDto.builder()
             .id(1L)
             .name("Novel")
             .build();
 
-    private static final Genre EXPECTED_GENRE_2 = Genre.builder()
+    private static final GenreDto EXPECTED_GENRE_2 = GenreDto.builder()
             .id(2L)
             .name("Novella")
             .build();
 
-    private static final Genre EXPECTED_GENRE_3 = Genre.builder()
+    private static final GenreDto EXPECTED_GENRE_3 = GenreDto.builder()
             .id(3L)
             .name("Fantasy")
             .build();
-    private static final Book EXPECTED_BOOK_1 = Book.builder()
-            .id(1L)
-            .title("The Silmarillion")
-            .publicationYear(1889)
-            .author(EXPECTED_AUTHOR_1)
-            .genre(EXPECTED_GENRE_3)
-            .build();
+    private static final BookDto EXPECTED_BOOK_1 = new BookDto(1L, "The Silmarillion",
+            1977, EXPECTED_AUTHOR_1, EXPECTED_GENRE_3);
 
-    private static final Book EXPECTED_BOOK_2 = Book.builder()
-            .id(2L)
-            .title("The Kreutzer Sonata")
-            .publicationYear(1977)
-            .author(EXPECTED_AUTHOR_2)
-            .genre(EXPECTED_GENRE_2)
-            .build();
+    private static final BookDto EXPECTED_BOOK_2 = new BookDto(2L, "The Kreutzer Sonata",
+            1889, EXPECTED_AUTHOR_2, EXPECTED_GENRE_2);
 
-    private static final Book EXPECTED_BOOK_3 = Book.builder()
-            .id(3L)
-            .title("The Ingenious Gentleman Don Quixote of La Mancha")
-            .publicationYear(1605)
-            .author(EXPECTED_AUTHOR_3)
-            .genre(EXPECTED_GENRE_1)
-            .build();
+    private static final BookDto EXPECTED_BOOK_3 = new BookDto(3L,"The Ingenious Gentleman Don Quixote of La Mancha",
+            1605, EXPECTED_AUTHOR_3, EXPECTED_GENRE_1);
+
 
     @Autowired
     private MockMvc mvc;
 
     @MockBean
-    private BookRepository bookRepository;
+    private BookService bookService;
 
     @MockBean
-    private AuthorRepository authorRepository;
+    private AuthorService authorService;
 
     @MockBean
-    private GenreRepository genreRepository;
+    private GenreService genreService;
 
     @BeforeEach
     public void setUp() {
-        when(bookRepository.findById(EXPECTED_BOOK_1.getId())).thenReturn(Optional.of(EXPECTED_BOOK_1));
-        when(bookRepository.findById(EXPECTED_BOOK_2.getId())).thenReturn(Optional.of(EXPECTED_BOOK_2));
-        when(bookRepository.findById(EXPECTED_BOOK_3.getId())).thenReturn(Optional.of(EXPECTED_BOOK_3));
-        when(bookRepository.findAll()).thenReturn(List.of(EXPECTED_BOOK_1, EXPECTED_BOOK_2, EXPECTED_BOOK_3));
-        when(authorRepository.findAll()).thenReturn(List.of(EXPECTED_AUTHOR_1, EXPECTED_AUTHOR_2, EXPECTED_AUTHOR_3));
-        when(genreRepository.findAll()).thenReturn(List.of(EXPECTED_GENRE_1, EXPECTED_GENRE_2, EXPECTED_GENRE_3));
+        when(bookService.getById(EXPECTED_BOOK_1.getId())).thenReturn(Optional.of(EXPECTED_BOOK_1));
+        when(bookService.getById(EXPECTED_BOOK_2.getId())).thenReturn(Optional.of(EXPECTED_BOOK_2));
+        when(bookService.getById(EXPECTED_BOOK_3.getId())).thenReturn(Optional.of(EXPECTED_BOOK_3));
+        when(bookService.getAll()).thenReturn(List.of(EXPECTED_BOOK_1, EXPECTED_BOOK_2, EXPECTED_BOOK_3));
+        when(authorService.getAll()).thenReturn(List.of(EXPECTED_AUTHOR_1, EXPECTED_AUTHOR_2, EXPECTED_AUTHOR_3));
+        when(genreService.getAll()).thenReturn(List.of(EXPECTED_GENRE_1, EXPECTED_GENRE_2, EXPECTED_GENRE_3));
     }
 
     @Test
     void shouldReturnExpectedBooks() throws Exception {
 
-        List<Book> expected = List.of(EXPECTED_BOOK_1, EXPECTED_BOOK_2, EXPECTED_BOOK_3);
+        List<BookDto> expected = List.of(EXPECTED_BOOK_1, EXPECTED_BOOK_2, EXPECTED_BOOK_3);
 
         mvc.perform(get("/book"))
                 .andDo(print())
@@ -148,48 +137,71 @@ public class BookControllerTest {
                 .andExpect(view().name("book/edit"));
     }
 
-    static class BookListMatcher extends AssertionMatcher<List<Book>> {
+    @Test
+    void shouldPerformCreateBook() throws Exception {
+        BookDto expectedBook = new BookDto(null, "Resurrection", 1889,
+                new AuthorDto(EXPECTED_AUTHOR_2.getId()), new GenreDto(EXPECTED_GENRE_1.getId()));
 
-        private final List<Book> expected;
+        mvc.perform(post("/book/add")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("title", expectedBook.getTitle())
+                        .param("publicationYear", Integer.toString(expectedBook.getPublicationYear()))
+                        .param("author", Long.toString(expectedBook.getAuthor().getId()))
+                        .param("genre", Long.toString(expectedBook.getGenre().getId()))
+                )
+                .andDo(print())
+                .andExpect(redirectedUrl("/book"));
 
-        public BookListMatcher(List<Book> expected) {
+        verify(bookService).insert(argThat(actual -> {
+            assertThat(actual)
+                    .usingRecursiveComparison()
+                    .isEqualTo(expectedBook);
+            return true;
+        }));
+    }
+
+    static class BookListMatcher extends AssertionMatcher<List<BookDto>> {
+
+        private final List<BookDto> expected;
+
+        public BookListMatcher(List<BookDto> expected) {
             this.expected = expected;
         }
 
         @Override
-        public void assertion(List<Book> actual) throws AssertionError {
+        public void assertion(List<BookDto> actual) throws AssertionError {
             assertThat(actual)
                     .usingRecursiveFieldByFieldElementComparator(RecursiveComparisonConfiguration.builder().build())
                     .containsExactlyInAnyOrderElementsOf(expected);
         }
     }
 
-    static class BookMatcher extends AssertionMatcher<Book> {
+    static class BookMatcher extends AssertionMatcher<BookDto> {
 
-        private final Book expected;
+        private final BookDto expected;
 
-        public BookMatcher(Book expected) {
+        public BookMatcher(BookDto expected) {
             this.expected = expected;
         }
 
         @Override
-        public void assertion(Book actual) throws AssertionError {
+        public void assertion(BookDto actual) throws AssertionError {
             assertThat(actual)
                     .usingRecursiveComparison()
                     .isEqualTo(expected);
         }
     }
 
-    static class AuthorListMatcher extends AssertionMatcher<List<Author>> {
+    static class AuthorListMatcher extends AssertionMatcher<List<AuthorDto>> {
 
-        private final List<Author> expected;
+        private final List<AuthorDto> expected;
 
-        public AuthorListMatcher(List<Author> expected) {
+        public AuthorListMatcher(List<AuthorDto> expected) {
             this.expected = expected;
         }
 
         @Override
-        public void assertion(List<Author> actual) throws AssertionError {
+        public void assertion(List<AuthorDto> actual) throws AssertionError {
             assertThat(actual)
                     .usingRecursiveFieldByFieldElementComparator(RecursiveComparisonConfiguration.builder().build())
                     .containsExactlyInAnyOrderElementsOf(expected);
@@ -197,16 +209,16 @@ public class BookControllerTest {
     }
 
 
-    static class GenreListMatcher extends AssertionMatcher<List<Genre>> {
+    static class GenreListMatcher extends AssertionMatcher<List<GenreDto>> {
 
-        private final List<Genre> expected;
+        private final List<GenreDto> expected;
 
-        public GenreListMatcher(List<Genre> expected) {
+        public GenreListMatcher(List<GenreDto> expected) {
             this.expected = expected;
         }
 
         @Override
-        public void assertion(List<Genre> actual) throws AssertionError {
+        public void assertion(List<GenreDto> actual) throws AssertionError {
             assertThat(actual)
                     .usingRecursiveFieldByFieldElementComparator(RecursiveComparisonConfiguration.builder().build())
                     .containsExactlyInAnyOrderElementsOf(expected);
