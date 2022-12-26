@@ -47,22 +47,18 @@ public class BookController {
 
     @GetMapping("/edit")
     public String editPage(@RequestParam(value = "id") long id, Model model) {
-        BookDto book = bookService.getById(id).orElseThrow();
+        BookDto book = bookService.getById(id).orElseThrow(NotFoundException::new);
+        List<AuthorDto> authors = authorService.getAll();
+        List<GenreDto> genres = genreService.getAll();
         model.addAttribute("book", book);
-        model.addAttribute("authors", authorService.getAll());
-        model.addAttribute("genres", genreService.getAll());
+        model.addAttribute("authors", authors);
+        model.addAttribute("genres", genres);
         return "book/edit";
     }
 
     @PostMapping("/edit")
-    public String edit(BookDto bookDto,
-                       @RequestParam(value = "authorId") long authorId,
-                       @RequestParam(value = "genreId") long genreId) {
-        AuthorDto authorDto = authorService.getById(authorId).orElseThrow(NotFoundException::new);
-        GenreDto genreDto = genreService.getById(genreId).orElseThrow(NotFoundException::new);
-        BookDto book = new BookDto(bookDto.getId(), bookDto.getTitle(), bookDto.getPublicationYear(),
-                authorDto, genreDto);
-        bookService.insert(book);
+    public String edit(@ModelAttribute("book") BookDto bookDto) {
+        bookService.insert(bookDto);
         return "redirect:/book";
     }
 

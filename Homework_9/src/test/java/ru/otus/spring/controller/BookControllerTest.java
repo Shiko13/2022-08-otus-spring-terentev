@@ -138,6 +138,45 @@ public class BookControllerTest {
     }
 
     @Test
+    void shouldPerformEditBook() throws Exception {
+        BookDto expectedBook = new BookDto(1L, "The Silmarillion",
+                1977, new AuthorDto(EXPECTED_AUTHOR_1.getId()), new GenreDto(EXPECTED_GENRE_3.getId()));
+
+        mvc.perform(post("/book/edit")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("id", Long.toString(expectedBook.getId()))
+                        .param("title", expectedBook.getTitle())
+                        .param("publicationYear", Integer.toString(expectedBook.getPublicationYear()))
+                        .param("author", Long.toString(expectedBook.getAuthor().getId()))
+                        .param("genre", Long.toString(expectedBook.getGenre().getId()))
+                )
+                .andDo(print())
+                .andExpect(redirectedUrl("/book"));
+
+        verify(bookService).insert(argThat(actual -> {
+            assertThat(actual)
+                    .usingRecursiveComparison()
+                    .isEqualTo(expectedBook);
+            return true;
+        }));
+    }
+
+    @Test
+    void shouldReturnDataForCreateBook() throws Exception {
+        mvc.perform(get("/book/add"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("book"))
+                .andExpect(model().attribute("book", new BookMatcher(new BookDto(null, "", 2022,
+                        new AuthorDto(null, null, null), new GenreDto(null, null)))))
+                .andExpect(model().attributeExists("authors"))
+                .andExpect(model().attribute("authors", new AuthorListMatcher(List.of(EXPECTED_AUTHOR_1, EXPECTED_AUTHOR_2, EXPECTED_AUTHOR_3))))
+                .andExpect(model().attributeExists("genres"))
+                .andExpect(model().attribute("genres", new GenreListMatcher(List.of(EXPECTED_GENRE_1, EXPECTED_GENRE_2, EXPECTED_GENRE_3))))
+                .andExpect(view().name("book/add"));
+    }
+
+    @Test
     void shouldPerformCreateBook() throws Exception {
         BookDto expectedBook = new BookDto(null, "Resurrection", 1889,
                 new AuthorDto(EXPECTED_AUTHOR_2.getId()), new GenreDto(EXPECTED_GENRE_1.getId()));

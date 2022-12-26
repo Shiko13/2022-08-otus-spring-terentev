@@ -14,7 +14,7 @@
         <p><a class="button" href="/templates/index.html" th:href="@{/}">Home page</a></p>
     </div>
     <div class="content">
-        <form class="edit-form" action="edit.html" th:object="${book}" th:method="post" th:action="@{/book/edit}">
+        <form class="edit-form" th:object="${book}" th:method="post" th:action="@{/book/edit}">
             <table>
                 <tr>
                     <td><label>ID</label></td>
@@ -38,21 +38,26 @@
                     <td><label>Author</label></td>
                     <td>
                         <label>
-                            <select name="authorId">
-                                <option th:each="author : ${authors}" th:value="${author.id}"
-                                        th:selected="${author.id}==*{author.id}"
-                                        th:text="${author.name} + ' ' + ${author.surname}">
+                            <select name="book-author" th:field="*{author}">
+                                <option th:each="a : ${authors}"
+                                        th:value="${{a}}"
+                                        th:text="${a.name} + ' ' + ${a.surname}"
+                                        th:selected="${a.id == book.author.id}">
+                                </option>
                             </select>
                         </label>
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Жанр</label></td>
+                    <td><label>Genre</label></td>
                     <td>
                         <label>
-                            <select name="genreId">
-                                <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"
-                                        th:selected="${genre.id}==*{genre.id}">
+                            <select name="genre-author" th:field="*{genre}">
+                                <option th:each="g : ${genres}"
+                                        th:value="${{g}}"
+                                        th:text="${g.name}"
+                                        th:selected="${g.id == book.genre.id}">
+                                </option>
                             </select>
                         </label>
                     </td>
