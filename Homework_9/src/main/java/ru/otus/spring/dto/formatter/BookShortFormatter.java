@@ -1,10 +1,12 @@
 package ru.otus.spring.dto.formatter;
 
 import org.springframework.format.Formatter;
+import org.springframework.stereotype.Component;
 import ru.otus.spring.dto.BookDtoOnlyId;
 
 import java.util.Locale;
 
+@Component
 public class BookShortFormatter implements Formatter<BookDtoOnlyId> {
 
     @Override

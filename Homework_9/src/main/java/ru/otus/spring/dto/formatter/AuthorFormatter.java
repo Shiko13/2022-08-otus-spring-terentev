@@ -1,10 +1,12 @@
 package ru.otus.spring.dto.formatter;
 
 import org.springframework.format.Formatter;
+import org.springframework.stereotype.Component;
 import ru.otus.spring.dto.AuthorDto;
 
 import java.util.Locale;
 
+@Component
 public class AuthorFormatter implements Formatter<AuthorDto> {
 
     @Override

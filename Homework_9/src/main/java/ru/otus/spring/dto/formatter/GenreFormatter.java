@@ -1,11 +1,13 @@
 package ru.otus.spring.dto.formatter;
 
 import org.springframework.format.Formatter;
+import org.springframework.stereotype.Component;
 import ru.otus.spring.dto.GenreDto;
 
 import java.text.ParseException;
 import java.util.Locale;
 
+@Component
 public class GenreFormatter implements Formatter<GenreDto> {
     @Override
     public GenreDto parse(String id, Locale locale) throws ParseException {
