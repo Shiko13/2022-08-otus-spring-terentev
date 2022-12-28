@@ -12,6 +12,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.spring.dto.AuthorDto;
 import ru.otus.spring.dto.BookDto;
 import ru.otus.spring.dto.GenreDto;
+import ru.otus.spring.dto.formatter.AuthorFormatter;
+import ru.otus.spring.dto.formatter.BookShortFormatter;
+import ru.otus.spring.dto.formatter.GenreFormatter;
 import ru.otus.spring.service.AuthorService;
 import ru.otus.spring.service.BookService;
 import ru.otus.spring.service.GenreService;
@@ -28,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(BookController.class)
+@WebMvcTest({BookController.class, AuthorFormatter.class, BookShortFormatter.class, GenreFormatter.class})
 public class BookControllerTest {
 
     private static final AuthorDto EXPECTED_AUTHOR_1 = AuthorDto.builder()
