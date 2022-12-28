@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>E-library</title>
+    <link th:href="@{/styles/css/main.css}" rel="stylesheet"/>
+</head>
+<body>
+<section class="page">
+    <header class="header">
+        <h1 class="header__title">E-library</h1>
+    </header>
+    <div class="sidebar">
+        <p><a class="button" href="/templates/index.html" th:href="@{/}">Home page</a></p>
+    </div>
+    <div class="content">
+        <form class="edit-form" th:object="${book}" th:method="post" th:action="@{/book/edit}">
+            <table>
+                <tr>
+                    <td><label>ID</label></td>
+                    <td><label>
+                        <input type="text" name="id" readonly="readonly" th:value="*{id}"/>
+                    </label></td>
+                </tr>
+                <tr>
+                    <td><label>Title</label></td>
+                    <td><label>
+                        <input type="text" name="title" th:value="*{title}"/>
+                    </label></td>
+                </tr>
+                <tr>
+                    <td><label>Publication year</label></td>
+                    <td><label>
+                        <input type="text" name="publicationYear" th:value="*{publicationYear}"/>
+                    </label></td>
+                </tr>
+                <tr>
+                    <td><label>Author</label></td>
+                    <td>
+                        <label>
+                            <select name="book-author" th:field="*{author}">
+                                <option th:each="a : ${authors}"
+                                        th:value="${{a}}"
+                                        th:text="${a.name} + ' ' + ${a.surname}"
+                                        th:selected="${a.id == book.author.id}">
+                                </option>
+                            </select>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Genre</label></td>
+                    <td>
+                        <label>
+                            <select name="genre-author" th:field="*{genre}">
+                                <option th:each="g : ${genres}"
+                                        th:value="${{g}}"
+                                        th:text="${g.name}"
+                                        th:selected="${g.id == book.genre.id}">
+                                </option>
+                            </select>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="submit">Save</button>
+                        <a href="" th:href="@{/templates/book}">
+                            <button type="button">Cancel</button>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</section>
+</body>
+</html>
