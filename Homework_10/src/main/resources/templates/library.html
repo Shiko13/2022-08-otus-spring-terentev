@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>E-Library</title>
+    <link th:href="@{/styles/css/main.css}" rel="stylesheet"/>
+    <script defer th:src="@{/js/library.js}"></script>
+</head>
+<body>
+<section class="page">
+    <header class="header">
+        <h1 class="header__title">E-library</h1>
+    </header>
+    <div class="book-info">
+        <h2>Book's editor:</h2>
+        <div class="row">
+            <label class="label" for="book-id-input">ID:</label>
+            <input id="book-id-input" type="text" name="book-id-input" readonly="readonly"/>
+        </div>
+
+        <div class="row">
+            <label class="label" for="book-title-input">Title:</label>
+            <input id="book-title-input" name="book-title-input" type="text"/>
+        </div>
+
+        <div class="row">
+            <label class="label" for="book-author-select">Author:</label>
+            <select class="form-control" id="book-author-select" name="book-author-select">
+                <option th:each="author : ${authors}"
+                        th:value="${author.id}"
+                        th:text="${author.name}">
+                </option>
+            </select>
+        </div>
+
+        <div class="row">
+            <label class="label" for="book-genre-select">Genre:</label>
+            <select class="form-control" id="book-genre-select" name="book-genre-select">
+                <option th:each="genre: ${genres}"
+                        th:value="${genre.id}"
+                        th:text="${genre.name}">
+                </option>
+            </select>
+        </div>
+
+        <div class="row">
+            <button id="btn-save-book-form" class="button">Add or edit</button>
+            <button id="btn-reset-book-form" class="button">Reset</button>
+        </div>
+    </div>
+    <div>
+        <div class="table-fix-head">
+            <h2>Books:</h2>
+            <table class="tab-data" id="tab-books-data">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Author ID</th>
+                    <th>Author Name</th>
+                    <th>Genre ID</th>
+                    <th>Genre Name</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <button id="btn-get-all-books" class="button">Get all books</button>
+    </div>
+</section>
+<div class="block_container">
+    <div class="comment-form">
+        <h2>Comment's editor:</h2>
+        <div class="row">
+            <label class="label" for="comment-id-input">ID:</label>
+            <input id="comment-id-input" type="text" name="comment-id-input" readonly="readonly"/>
+        </div>
+
+        <div class="row">
+            <label class="label" for="comment-text-input">Text:</label>
+            <input id="comment-text-input" name="comment-text-input" type="text"/>
+        </div>
+
+        <div class="row">
+            <button id="btn-save-comment-form" class="button">Add or edit</button>
+            <button id="btn-reset-comment-form" class="button">Reset</button>
+        </div>
+    </div>
+    <div>
+        <h2>Comments of book:</h2>
+        <label class="label" for="book-id-for-comments-input">Book's ID:</label>
+        <input id="book-id-for-comments-input" type="text" name="book-id-for-comments-input"
+               readonly="readonly"/>
+        <div class="table-comment">
+            <table class="tab-data" id="tab-comments-data">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Text</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
