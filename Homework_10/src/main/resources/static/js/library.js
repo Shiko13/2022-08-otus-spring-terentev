@@ -35,7 +35,7 @@ window.onload = function () {
     }
 
     function onBookDelete(btn) {
-        if (confirm('Are you sure to delete this record?')) {
+        if (confirm('Are you sure you want to delete this record?')) {
             let row = btn.parentElement.parentElement;
             deleteBookById(row.cells[0].innerHTML)
                 .then(() => resetAll())
@@ -52,8 +52,10 @@ window.onload = function () {
 
     function onBookFormSubmit() {
         let bookTitle = document.getElementById('book-title-input').value;
-        let authorId = Number(document.getElementById("book-author-select").querySelector("option:checked").value);
-        let genreId = Number(document.getElementById("book-genre-select").querySelector("option:checked").value);
+        let authorId = Number(document.getElementById("book-author-select")
+            .querySelector("option:checked").value);
+        let genreId = Number(document.getElementById("book-genre-select")
+            .querySelector("option:checked").value);
 
         let book = {
             title: bookTitle,
@@ -67,14 +69,14 @@ window.onload = function () {
 
         console.log(JSON.stringify(book));
 
-        let bookIdTxt = document.getElementById('book-id-input').value;
+        let bookIdText = document.getElementById('book-id-input').value;
 
-        if (!bookIdTxt) {
+        if (!bookIdText) {
             createBook(book)
                 .then(() => resetAll())
                 .then(() => getAllBooks());
         } else {
-            book["id"] = Number(bookIdTxt);
+            book["id"] = Number(bookIdText);
             updateBook(book)
                 .then(() => resetAll())
                 .then(() => getAllBooks());
@@ -92,32 +94,11 @@ window.onload = function () {
                 response.json().then(
                     books => {
                         console.log(books);
-                        let new_tbody = document.createElement('tbody');
-                        if (books.length > 0) {
-                            books.forEach((book) => {
-                                let row = new_tbody.insertRow();
-                                let cell0 = row.insertCell(0);
-                                cell0.innerHTML = book.id;
-                                let cell1 = row.insertCell(1);
-                                cell1.innerHTML = book.title;
-                                let cell2 = row.insertCell(2);
-                                cell2.innerHTML = String(book.author.id);
-                                let cell3 = row.insertCell(3);
-                                cell3.innerHTML = book.author.name;
-                                let cell4 = row.insertCell(4);
-                                cell4.innerHTML = String(book.genre.id);
-                                let cell5 = row.insertCell(5);
-                                cell5.innerHTML = book.genre.name;
-                                let cell6 = row.insertCell(6);
-                                cell6.innerHTML = `<button id="btn-edit-book">Edit</button>`;
-                                let cell7 = row.insertCell(7);
-                                cell7.innerHTML = `<button id="btn-delete-book">Delete</button>`;
-                                let cell8 = row.insertCell(8);
-                                cell8.innerHTML = `<button id="btn-get-comments">Comments</button>`;
-                            });
-                        }
-                        let old_tbody = document.getElementById('tab-books-data').getElementsByTagName('tbody')[0];
-                        old_tbody.parentNode.replaceChild(new_tbody, old_tbody);
+                        let newTBody = document.createElement('tbody');
+                        fillTable(books, newTBody);
+                        let oldTBody = document.getElementById('tab-books-data')
+                            .getElementsByTagName('tbody')[0];
+                        oldTBody.parentNode.replaceChild(newTBody, oldTBody);
                         document.querySelectorAll('[id=btn-edit-book]').forEach((btn) => {
                             btn.addEventListener('click', function () {
                                 onBookPrepareEdit(this);
@@ -182,7 +163,7 @@ window.onload = function () {
     }
 
     function onCommentDelete(btn) {
-        if (confirm('Are you sure to delete this record?')) {
+        if (confirm('Are you sure you want to delete this record?')) {
             let row = btn.parentElement.parentElement;
             let commentId = Number(row.cells[0].innerHTML);
             let bookId = Number(document.getElementById('book-id-for-comments-input').value);
@@ -198,8 +179,9 @@ window.onload = function () {
     }
 
     function resetCommentsTable() {
-        let old_tbody = document.getElementById('tab-comments-data').getElementsByTagName('tbody')[0];
-        old_tbody.parentNode.replaceChild(document.createElement('tbody'), old_tbody);
+        let oldTBody = document.getElementById('tab-comments-data')
+            .getElementsByTagName('tbody')[0];
+        oldTBody.parentNode.replaceChild(document.createElement('tbody'), oldTBody);
         document.getElementById('book-id-for-comments-input').value = ""
     }
 
@@ -216,14 +198,14 @@ window.onload = function () {
 
         console.log(JSON.stringify(comment));
 
-        let commentIdTxt = document.getElementById('comment-id-input').value;
+        let commentIdText = document.getElementById('comment-id-input').value;
 
-        if (!commentIdTxt) {
+        if (!commentIdText) {
             createComment(bookId, comment)
                 .then(() => resetCommentForm())
                 .then(() => getAllCommentsByBookId(bookId));
         } else {
-            comment["id"] = Number(commentIdTxt);
+            comment["id"] = Number(commentIdText);
             updateComment(bookId, comment)
                 .then(() => resetCommentForm())
                 .then(() => getAllCommentsByBookId(bookId));
@@ -241,10 +223,10 @@ window.onload = function () {
                 response.json().then(
                     comments => {
                         console.log(comments);
-                        let new_tbody = document.createElement('tbody');
+                        let newTBody = document.createElement('tbody');
                         if (comments.length > 0) {
                             comments.forEach((comment) => {
-                                let row = new_tbody.insertRow();
+                                let row = newTBody.insertRow();
                                 let cell0 = row.insertCell(0);
                                 cell0.innerHTML = comment.id;
                                 let cell1 = row.insertCell(1);
@@ -255,8 +237,9 @@ window.onload = function () {
                                 cell3.innerHTML = `<button id="btn-delete-comment">Delete</button>`;
                             });
                         }
-                        let old_tbody = document.getElementById('tab-comments-data').getElementsByTagName('tbody')[0];
-                        old_tbody.parentNode.replaceChild(new_tbody, old_tbody);
+                        let oldTBody = document.getElementById('tab-comments-data')
+                            .getElementsByTagName('tbody')[0];
+                        oldTBody.parentNode.replaceChild(newTBody, oldTBody);
                         document.querySelectorAll('[id=btn-edit-comment]').forEach((btn) => {
                             btn.addEventListener('click', function () {
                                 onCommentPrepareEdit(this);
@@ -299,5 +282,31 @@ window.onload = function () {
             },
             body: JSON.stringify(comment)
         });
+    }
+
+    function fillTable(books, newTBody) {
+        if (books.length > 0) {
+            books.forEach((book) => {
+                let row = newTBody.insertRow();
+                let cell0 = row.insertCell(0);
+                cell0.innerHTML = book.id;
+                let cell1 = row.insertCell(1);
+                cell1.innerHTML = book.title;
+                let cell2 = row.insertCell(2);
+                cell2.innerHTML = String(book.author.id);
+                let cell3 = row.insertCell(3);
+                cell3.innerHTML = book.author.name;
+                let cell4 = row.insertCell(4);
+                cell4.innerHTML = String(book.genre.id);
+                let cell5 = row.insertCell(5);
+                cell5.innerHTML = book.genre.name;
+                let cell6 = row.insertCell(6);
+                cell6.innerHTML = `<button id="btn-edit-book">Edit</button>`;
+                let cell7 = row.insertCell(7);
+                cell7.innerHTML = `<button id="btn-delete-book">Delete</button>`;
+                let cell8 = row.insertCell(8);
+                cell8.innerHTML = `<button id="btn-get-comments">Comments</button>`;
+            });
+        }
     }
 }
