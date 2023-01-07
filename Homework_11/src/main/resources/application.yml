@@ -1,0 +1,15 @@
+spring:
+  data:
+    mongodb:
+      database: library
+      port: 27017
+      host: localhost
+
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.spring.mongock.changelog
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.ReactiveMongoTemplate: DEBUG
