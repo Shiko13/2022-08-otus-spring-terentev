@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>E-library</title>
+    <link th:href="@{/styles/css/main.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="page">
+    <header class="header">
+    <h1 class="header__title">E-library</h1>
+    </header>
+    <section class="sidebar">
+        <p><a class="button" href="/templates/index.html" th:href="@{/}">Home page</a></p>
+        <p><a class="button" href="" th:href="@{/book/add}" title="Add">Add</a></p>
+    </section>
+    <section class="content">
+        <table class="table">
+            <tr class="table__border">
+                <th class="table__border_cell">№</th>
+                <th class="table__border_cell">Title</th>
+                <th class="table__border_cell">Publication year</th>
+                <th class="table__border_cell">Author</th>
+                <th class="table__border_cell">Genre</th>
+                <th></th>
+            </tr>
+            <tr class="table__border" th:each="book : ${books}">
+                <td class="table__border_cell" th:text="${bookStat.index} + 1"/>
+                <td class="table__border_cell" th:text="${book.title}"/>
+                <td class="table__border_cell" th:text="${book.publicationYear}"/>
+                <td class="table__border_cell" th:text="${book.author.name} + ' ' + ${book.author.surname}"/>
+                <td class="table__border_cell" th:text="${book.genre.name}"/>
+                <td class="table__border_cell">
+                    <a href="edit.html" th:href="@{/book/edit(id=${book.id})}">
+                        <img src="/pictures/edit.jpg" class="table__favicon" alt="edit"/>
+                    </a>
+                    <form action="" class="table__border_cell__image" th:action="@{/book/remove(id=${book.id})}" th:method="post">
+                        <input type="image" src="/pictures/remove.jpg" class="table__favicon" alt="submit"/>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </section>
+</div>
+</body>
+</html>

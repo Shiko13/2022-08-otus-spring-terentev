@@ -1,0 +1,28 @@
+insert into authors (name, surname)
+values ('John', 'Tolkien');
+insert into authors (name, surname)
+values ('Lev', 'Tolstoy');
+insert into authors (name, surname)
+values ('Miguel', 'Cervantes');
+insert into genres (genre_name)
+values ('Novel');
+insert into genres (genre_name)
+values ('Novella');
+insert into genres (genre_name)
+values ('Fantasy');
+insert into BOOKS (TITLE, PUBLICATION_YEAR, AUTHOR_ID, GENRE_ID)
+VALUES ('The Silmarillion', 1977, 1, 3);
+insert into BOOKS (TITLE, PUBLICATION_YEAR, AUTHOR_ID, GENRE_ID)
+VALUES ('The Kreutzer Sonata', 1889, 2, 2);
+insert into BOOKS (TITLE, PUBLICATION_YEAR, AUTHOR_ID, GENRE_ID)
+VALUES ('The Ingenious Gentleman Don Quixote of La Mancha', 1605, 3, 1);
+insert into COMMENTS (text, book_id)
+VALUES ('Amazing book!', 1);
+insert into COMMENTS (text, book_id)
+VALUES ('Is it book about music?', 2);
+insert into COMMENTS (text, book_id)
+VALUES ('Sancho Panza is my crush ^_^', 3);
+insert into COMMENTS (text, book_id)
+VALUES ('Is it a book about big number?', 1);
+insert into user_info(username, password)
+values ('login','$2a$12$rKaNiefu7k13L4YBLlQTce5K3TVYSV7VePRxoflNXetEFjIaIMhSm');
