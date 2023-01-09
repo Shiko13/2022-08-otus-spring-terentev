@@ -6,12 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import ru.otus.spring.domain.Comment;
 import ru.otus.spring.dto.CommentDto;
 import ru.otus.spring.dto.converter.CommentDtoConverter;
 import ru.otus.spring.repository.BookRepository;
 import ru.otus.spring.repository.CommentRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -42,21 +42,17 @@ public class CommentController {
     @PostMapping("/api/books/{bookId}/comments")
     public Mono<ResponseEntity<CommentDto>> createComment(@PathVariable("bookId") String bookId,
                                                     @RequestBody CommentDto comment) {
-        return bookRepository.findById(bookId)
-                .flatMap(b ->
-                        Mono.fromCallable(() -> commentDtoConverter.fromDto(comment))
-                                .flatMap(commentRepository::save)
-                                .flatMap(c -> {
-                                    if (b.getComments() == null) {
-                                        b.setComments(new ArrayList<>());
-                                    }
-                                    b.getComments().add(c);
-                                    return bookRepository.save(b).thenReturn(c);
-                                })
-                )
+        Comment domainComment = commentDtoConverter.fromDto(comment);
+        return commentRepository.save(domainComment)
+                .zipWith(bookRepository.findById(bookId))
+                .map(t -> {
+                    t.getT2().getComments().add(t.getT1());
+                    return t;
+                })
+                .flatMap(t -> bookRepository.save(t.getT2()).thenReturn(t.getT1()))
                 .map(commentDtoConverter::toDto)
                 .map(c -> ResponseEntity.status(HttpStatus.CREATED).body(c))
-                .switchIfEmpty(Mono.fromCallable(() -> ResponseEntity.notFound().build()));
+                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
     @PutMapping("/api/books/{bookId}/comments/{id}")

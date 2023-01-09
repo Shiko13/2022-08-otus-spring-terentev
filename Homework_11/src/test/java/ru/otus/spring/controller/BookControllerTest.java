@@ -7,7 +7,6 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Flux;
@@ -33,8 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
 
-@WebFluxTest(controllers = BookController.class)
-@TestPropertySource(properties = "mongock.enabled=false")
+@WebFluxTest(controllers = BookController.class, properties = "mongock.enabled=false")
 @Import({BookDtoConverter.class, AuthorDtoConverter.class, CommentDtoConverter.class, GenreDtoConverter.class})
 class BookControllerTest {
 
