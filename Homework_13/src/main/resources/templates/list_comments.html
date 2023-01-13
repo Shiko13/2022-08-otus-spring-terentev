@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Comments</title>
+    <style type="text/css">
+        .comments {
+            border: 2px solid #0b337e;
+            width: 800px;
+            border-collapse: separate;
+        }
+
+        .comments tr td, th {
+            padding: 1px;
+            border: 2px solid #0b337e;
+        }
+    </style>
+</head>
+<body>
+<h1>Comments:</h1>
+<table class="comments">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Text</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="comment : ${comments}">
+        <td th:text="${comment.id}"></td>
+        <td th:text="${comment.text}"></td>
+        <td>
+            <a th:href="@{/book/{bookId}/comments/edit(id=${comment.id},bookId=${comment.book.id})}"
+               href="edit_comment.html" th:text="Edit">Edit</a>
+        </td>
+        <td>
+            <form action="#" th:action="@{/book/{bookId}/comments/delete(id=${comment.id},bookId=${comment.book.id})}"
+                  method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p><a th:href="@{/book/{bookId}/comments/create (bookId=${bookId})}" href="edit_comment.html"
+      th:text="Create">Add new comment</a></p>
+<p><a href="/book">Back to books</a></p>
+<p><a href="/logout">Logout</a></p>
+</body>
+</html>

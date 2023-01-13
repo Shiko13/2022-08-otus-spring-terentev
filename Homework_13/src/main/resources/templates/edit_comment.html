@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:if="${comment.id}">Edit comment</title>
+    <title th:unless="${comment.id}">New comment</title>
+    <style type="text/css">
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<form id="edit-form" action="#"
+      th:action="${comment.id != null} ? @{/book/{bookId}/comments/edit(id=${comment.id},bookId=${comment.book.id})} :
+      @{/book/{bookId}/comments/create (bookId=${comment.book.id})}"
+      th:method="post"
+      th:object="${comment}">
+    <h3>Comment Info:</h3>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" readonly="readonly" th:value="*{id}" value=""/>
+    </div>
+
+    <div class="row">
+        <label for="comment-text-input">Text:</label>
+        <input id="comment-text-input" name="text" type="text" th:value="*{text}" value=""/>
+    </div>
+
+    <input th:field="*{book}" type="hidden">
+
+    <div class="row">
+        <button type="submit">Save</button>
+        <a href="list_comments.html" th:href="@{/book/{bookId}/comments/ (bookId=${comment.book.id})}">
+            <button type="button">Cancel</button></a>
+    </div>
+
+    <p><a href="/logout">Logout</a></p>
+</form>
+</body>
+</html>
