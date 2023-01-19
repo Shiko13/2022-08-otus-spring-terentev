@@ -1,0 +1,15 @@
+version: '3.1'
+
+services:
+
+  mongo:
+    restart: always
+    ports:
+      - "27117:27017"
+
+  mongo-express:
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo:27017
