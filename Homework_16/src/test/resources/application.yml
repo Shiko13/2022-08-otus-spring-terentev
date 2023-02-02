@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:library
+    username: sa
+    password: password
+    driver-class-name: org.h2.Driver
+  liquibase:
+    enabled: true
+    change-log: /db/changelog/db.changelog.test.yaml
+  h2:
+    console:
+      enabled: false
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
