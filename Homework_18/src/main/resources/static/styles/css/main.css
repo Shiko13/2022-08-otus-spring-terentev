@@ -1,0 +1,107 @@
+.page {
+    min-width: 1100px;
+    max-width: 1600px;
+    margin: 0 auto;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.button {
+    display: inline-block;
+    cursor: pointer;
+    font-size: 20px;
+    text-decoration: none;
+    padding: 6px 12px;
+    color: #ccc423;
+    background: #2353cc;
+    border-radius: 13px;
+    border: 3px solid #ccc423;
+    margin: 5px 5px;
+}
+
+.label {
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+}
+
+input:read-only {
+    background: lightgray;
+}
+
+.row {
+    text-align: center;
+}
+
+.block_container {
+    display: flex;
+    justify-content: space-around;
+    background-color: #aebcc9;
+}
+
+.header {
+    height: 100px;
+    display: flex;
+    position: relative;
+    background-image: url(../../pictures/bookshelf.jpg);
+    background-size: contain;
+    align-items: center;
+    box-sizing: border-box;
+    justify-content: center;
+}
+
+.header__title {
+    width: 350px;
+    align-items: center;
+    line-height: 100px;
+    font-size: 60px;
+    color: #bfc421;
+    text-align: center;
+    font-weight: 600;
+    margin: 0;
+    z-index: 2;
+}
+
+.table {
+    border-collapse: collapse;
+    background: #e3dbd5;
+    border-width: 1px;
+    width: 100%;
+    border-color: #2353cc;
+}
+
+.table-fix-head {
+    overflow: auto;
+    height: 300px;
+    background-color: #aad5c2;
+}
+
+.table-fix-head thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.tab-data {
+    border: 1px solid darkorchid;
+    width: 800px;
+    border-collapse: separate;
+    text-align: center;
+}
+
+.tab-data tr td, th {
+    padding: 1px;
+    border: 1px solid darkorchid;
+}
+
+.book-info {
+    background-color: beige;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.table-comment {
+    overflow: auto;
+    height: 200px;
+}
