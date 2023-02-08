@@ -1,0 +1,63 @@
+spring:
+  mongodb:
+    embedded:
+      version: 3.5.5
+  data:
+    mongodb:
+      port: 0
+      database: test
+
+mongock:
+  runner-type: "ApplicationRunner"
+  change-logs-scan-package:
+    - ru.otus.spring.mongock.changelog
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.ReactiveMongoTemplate: DEBUG
+
+resilience4j.circuitbreaker:
+  circuitBreakerAspectOrder: 1
+  configs:
+    default:
+      slidingWindowSize: 10
+      minimumNumberOfCalls: 5
+      permittedNumberOfCallsInHalfOpenState: 3
+      automaticTransitionFromOpenToHalfOpenEnabled: true
+      waitDurationInOpenState: 5s
+      failureRateThreshold: 60
+      eventConsumerBufferSize: 10
+      registerHealthIndicator: true
+  instances:
+    mongoDb:
+      baseConfig: default
+
+resilience4j.timelimiter:
+  instances:
+    mongoDb:
+      timeoutDuration: 2s
+      cancelRunningFuture: true
+
+resilience4j.retry:
+  retryAspectOrder: 2
+  instances:
+    mongoDb:
+      maxAttempts: 3
+      waitDuration: 10s
+      enableExponentialBackoff: true
+      exponentialBackoffMultiplier: 2
+      retryExceptions:
+        - com.mongodb.MongoException
+      ignoreExceptions:
+        - ru.otus.spring.exception.BookNotFoundException
+        - ru.otus.spring.exception.CommentNotFoundException
+
+resilience4j.bulkhead:
+  instances:
+    mongoDb:
+      maxWaitDuration: 10ms
+      maxConcurrentCalls: 10
